@@ -1,0 +1,127 @@
+# Some comment
+spring:
+  application:
+    name: test-engine
+    version: 0.0.1
+  profiles.active: local
+  main:
+    web-environment: true
+  sleuth:
+    enabled: true
+    sampler:
+     percentage: 0.1
+  zipkin:
+    enabled: true
+    baseUrl: http://some-zipkin-server.com
+    sender:
+      type: web
+
+  jackson:
+    property-naming-strategy: CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES
+
+server:
+  port: 8080
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /api/v1/api-docs
+
+endpoints:
+  metrics:
+    enabled: false
+  prometheus:
+    path: metrics
+  info:
+    enabled: true
+    path: /api/info
+  health:
+    path: /api/health
+    sensitive: false
+
+swagger:
+    title: Test Engine
+    description: Test Engine API
+    version: 0.0.1
+    termsOfServiceUrl:
+    license:
+    licenseUrl:
+
+custom.rest.connection:
+   connection-request-timeout: 3000
+   connect-timeout: 3000
+   read-timeout: 3000
+   http-keep-alive-timeout : 3000
+
+requestConfig:
+  connectTimeout: 60000
+  connectionRequestTimeout: 60000
+  socketTimeout: 60000
+  readTimeout: 60000
+
+stTemplates:
+  firstTemplate: classpath:/rules/firstTemplate.st
+  secondTemplate: classpath:/rules/secondTemplate.st
+
+rule_period:
+  transactionPeriod: '107000000'
+  extendEndDateLoginRule: '107000000'
+  extendStartDate: '000000000'
+  extendEndDate: '000000000'
+
+management:
+  security:
+    enabled: false
+
+---
+spring:
+  profiles: local
+
+  datasource:
+    dataSourceClassName: com.mysql.jdbc.jdbc2.optional.MysqlDataSource
+#    url: jdbc:mysql://127.0.0.1:3306/demo?useUnicode=true&characterEncoding=utf8&noAccessToProcedureBodies=true
+    url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8&noAccessToProcedureBodies=true
+    username: #username#
+    password: #password#
+
+  jpa:
+    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+    database: MYSQL
+    openInView: false
+    show_sql: false
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+      naming_strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+      hikari:
+          leakDetectionThreshold: 50
+
+    properties:
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: false
+
+---
+spring:
+  profiles: test
+
+  datasource:
+    dataSourceClassName: org.h2.jdbcx.JdbcDataSource
+    url: jdbc:h2:mem:campaign_db;DB_CLOSE_DELAY=-1
+    username: wi
+    password:
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    database: H2
+    openInView: false
+    show_sql: false
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create-drop
+      naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
+    properties:
+      hibernate.cache.use_second_level_cache: false
+      hibernate.cache.use_query_cache: false
+      hibernate.generate_statistics: true
