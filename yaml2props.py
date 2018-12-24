@@ -26,13 +26,13 @@ prop = []
 output = ''
 
 for line in lines:
-    value = re.search(r'(?<=:).+', line)
-    tabs = re.findall(r'(\s\s)', line)
     ignore = re.search(r'^\s?[#-]', line)
 
-    if ignore or not line.strip():
+    if ignore or not line.strip() or not ':' in line:
         output += '\n'
         continue
+
+    tabs = re.findall(r'(\s\s)', line.split(':')[0])
 
     index = len(tabs) if tabs else 0
 
@@ -48,6 +48,8 @@ for line in lines:
             prop.pop()
 
         prop.append(prop_name)
+
+    value = re.search(r'(?<=:).+', line)
 
     if value and value.group().strip():
         p = '.'.join(prop) + ' = ' + value.group().strip() + '\n'
