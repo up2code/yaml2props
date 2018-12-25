@@ -1,6 +1,6 @@
 # YAML2PROPERTIES
 
-Simple script for convert YAML to Properties file for Sptring application configuration.
+Simple script for convert YAML to Properties file for Spring application configuration.
 
 ## Minimum requirement
 
