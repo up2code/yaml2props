@@ -3,6 +3,10 @@ spring:
   application:
     name: test-engine
     version: 0.0.1
+    profiles:
+      - dev
+      - test
+      - user
   profiles.active: local
   main:
     web-environment: true
@@ -36,17 +40,29 @@ endpoints:
   info:
     enabled: true
     path: /api/info
+  allow-methods:
+  - GET
+  - HEAD
+  - OPTION
+  - POST
+  - PUT
+  - PATCH
+  - DELETE
   health:
     path: /api/health
     sensitive: false
 
 swagger:
-    title: Test Engine
-    description: Test Engine API
-    version: 0.0.1
-    termsOfServiceUrl:
-    license:
-    licenseUrl:
+  title: Test Engine
+  servers:
+    - http://server1
+    - http://server2
+    - http://server3
+  description: Test Engine API
+  version: 0.0.1
+  termsOfServiceUrl:
+  license:
+  licenseUrl:
 
 custom.rest.connection:
    connection-request-timeout: 3000
@@ -73,6 +89,9 @@ rule_period:
 management:
   security:
     enabled: false
+  roles:
+  - USER
+  - ADMIN
 
 ---
 spring:
