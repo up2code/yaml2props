@@ -21,4 +21,10 @@ chmod +x /usr/local/bin/yaml2props
 $ yaml2props {your_path_file}
 ```
 
+or you can specific output file path by yourself with option `--output`
+
+```
+$ yaml2props {your_path_file} --output {your_destination_file_path}
+```
+
 You can try with _sample.yaml_ as example file.

@@ -2,6 +2,7 @@ import argparse
 import os.path
 import pyperclip
 import re
+import os
 
 TAB_SIZE = 2
 USE_SPACES = True
@@ -11,10 +12,16 @@ parser = argparse.ArgumentParser(
     description = 'Simple script for convert YAML to Properties file format.'
 )
 parser.add_argument('file', help = 'Path of YAML file')
+parser.add_argument('--output', help = 'Output path. Default is same path of input file by replace extension to .properties')
 
 args = parser.parse_args()
 
 print('YAML File : %s' % args.file)
+
+output_file_path = args.output
+
+if(not output_file_path):
+    output_file_path = os.path.splitext(args.file)[0]+'.properties'
 
 if not os.path.isfile(args.file):
     raise ValueError(args.file + ' is not file')
@@ -71,16 +78,10 @@ for line in lines:
         }
         output += p
 
-# Prepare write file
-file_path = re.sub(r'\..+$', '.properties', args.file)
-
-# For debug output
-#print(output) 
-
-print('\nSave to file : ' + file_path)
+print('\nSave to file : ' + output_file_path)
  
  # Write file
-file_props = open(file_path,'w+')
+file_props = open(output_file_path,'w+')
 file_props.write(re.sub(r'\n\n\n+', '\n\n', output))
 file_props.close()
 
